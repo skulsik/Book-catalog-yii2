@@ -1,0 +1,6 @@
+/src/vendor/
+/src/runtime/
+/src/web/assets/
+mysql_data/
+.idea/
+.vscode/
