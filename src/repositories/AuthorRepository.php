@@ -3,8 +3,17 @@ namespace app\repositories;
 
 use yii\db\Query;
 
+/**
+ * Репозиторий для работы с авторами
+ */
 class AuthorRepository
 {
+    /**
+     * Получение топ-10 авторов за конкретный год по количеству выпущенных книг
+     *
+     * @param int $year Год, за который считаем книги
+     * @return array<int, array{full_name: string, books_count: int}> Массив авторов с количеством книг
+     */
     public function getTopAuthorsByYear(int $year): array
     {
         return (new Query())

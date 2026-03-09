@@ -12,7 +12,6 @@ class m260308_190900_create_book_table extends Migration
             'year' => $this->integer()->notNull(),
             'description' => $this->text(),
             'isbn' => $this->string(32)->unique(),
-            'cover_image' => $this->string(),
             'created_at' => $this->integer(),
             'updated_at' => $this->integer(),
         ]);
