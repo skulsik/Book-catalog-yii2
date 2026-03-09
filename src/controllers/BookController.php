@@ -7,11 +7,20 @@ use app\models\Book;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
+/**
+ * Контроллер для работы с книгами
+ *
+ * @package app\controllers
+ */
 class BookController extends Controller
 {
+    /**
+     * Настройка правил доступа
+     *
+     * @return array
+     */
     public function behaviors(): array
     {
         return [
@@ -41,7 +50,6 @@ class BookController extends Controller
      * Просмотр книги
      *
      * @param int $id
-     *
      * @return string
      */
     public function actionView(int $id): string
@@ -67,14 +75,37 @@ class BookController extends Controller
 
             foreach($authors as $authorId)
             {
-                $book->link('authors', Author::findOne($authorId));
+                /** @var Author|null $author */
+                $author = Author::findOne($authorId);
+                if ($author !== null) {
+                    $book->link('authors', $author);
+                }
             }
 
             return $this->redirect(['view','id' => $book->id]);
         }
 
+        /** @var Author[] $allAuthors */
         $allAuthors = Author::find()->all();
 
         return $this->render('create', ['book' => $book, 'allAuthors' => $allAuthors]);
+    }
+
+    /**
+     * Удаление книги
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function actionDelete(int $id): Response
+    {
+        $book = Book::findOne($id);
+        if ($book !== null) {
+            $book->delete();
+            Yii::$app->session->setFlash('success', 'Книга удалена');
+        } else {
+            Yii::$app->session->setFlash('error', 'Книга не найдена');
+        }
+        return $this->redirect(['index']);
     }
 }

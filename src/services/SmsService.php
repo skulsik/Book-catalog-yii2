@@ -2,8 +2,12 @@
 
 namespace app\services;
 
+use Yii;
 use yii\httpclient\Client;
 
+/**
+ * Сервис для отправки SMS
+ */
 class SmsService
 {
     /**
@@ -11,9 +15,17 @@ class SmsService
      */
     private string $apiKey;
 
-    public function __construct(string $apiKey)
+    /**
+     * SmsService constructor.
+     *
+     * Берёт API-ключ из параметров приложения.
+     */
+    public function __construct()
     {
-        $this->apiKey = $apiKey;
+        $this->apiKey = Yii::$app->params['smsApiKey'] ?? '';
+        if (!$this->apiKey) {
+            throw new \RuntimeException('Ключ API SMS не настроен в параметрах.');
+        }
     }
 
     /**

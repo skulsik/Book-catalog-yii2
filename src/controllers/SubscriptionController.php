@@ -2,19 +2,34 @@
 
 namespace app\controllers;
 
+use app\models\Author;
 use app\services\SubscriptionService;
 use Yii;
+use yii\base\Module;
 use yii\web\Controller;
 use yii\web\Response;
 
+/**
+ * Контроллер для управления подписками
+ *
+ * @package app\controllers
+ */
 class SubscriptionController extends Controller
 {
     /**
-     * @var SubscriptionService $service
+     * @var SubscriptionService $service Сервис подписок
      */
     private SubscriptionService $service;
 
-    public function __construct($id, $module, SubscriptionService $service, $config = [])
+    /**
+     * SubscriptionController constructor.
+     *
+     * @param string $id Идентификатор контроллера
+     * @param Module $module Модуль приложения
+     * @param SubscriptionService $service Сервис подписок
+     * @param array $config Конфигурация
+     */
+    public function __construct(string $id, Module $module, SubscriptionService $service, array $config = [])
     {
         $this->service = $service;
         parent::__construct($id, $module, $config);
@@ -39,5 +54,19 @@ class SubscriptionController extends Controller
         }
 
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * Создание подписки form
+     *
+     * @return string
+     */
+    public function actionForm(): string
+    {
+        $authors = Author::find()->all();
+
+        return $this->render('subscribe-form', [
+            'authors' => $authors,
+        ]);
     }
 }

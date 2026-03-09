@@ -11,7 +11,6 @@
 <?= $form->field($book, 'year') ?>
 <?= $form->field($book, 'description')->textarea() ?>
 <?= $form->field($book, 'isbn') ?>
-<?= $form->field($book, 'cover_image') ?>
 
     <h3>Авторы</h3>
 <?php foreach ($allAuthors as $author): ?>
